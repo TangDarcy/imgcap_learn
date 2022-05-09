@@ -1,15 +1,15 @@
 from pymysql import connect
 from pymysql.cursors import DictCursor
-
+from settings import MYHOST,MYPORT,MYUSER,MYPASSWORD,MYDATABASE
 class User(object):
     def __init__(self):
         self.conn= connect(
-            host='192.168.31.153',
-            port=3306,
-            user='tang',
-            password='Root123!',
-            database='image_system',
-            charset='utf8'
+            host= MYHOST,
+            port= MYPORT,
+            user= MYUSER,
+            password= MYPASSWORD,
+            database=MYDATABASE,
+            charset= 'utf8'
         )
         self.cursor=self.conn.cursor(DictCursor)
     
