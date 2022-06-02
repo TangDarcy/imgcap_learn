@@ -1,16 +1,16 @@
 <template>
   <div class="login">
     <span class="login_title">账号密码登录</span>
-    <el-form :model="form" style="width: 90%">
-      <el-form-item>
-        <el-input placeholder="请输入用户名" v-model="userName" />
+    <el-form :model="login_form" :rules="loginRules" style="width: 90%">
+      <el-form-item prop="userName">
+        <el-input placeholder="请输入用户名" v-model="login_form.userName" />
       </el-form-item>
-      <el-form-item>
-        <el-input placeholder="请输入密码" v-model="password" />
+      <el-form-item prop="passWord">
+        <el-input placeholder="请输入密码" v-model="login_form.passWord" />
       </el-form-item>
     </el-form>
   </div>
-  <el-button type="info" plain style="width: 78%" @click="toHome"
+  <el-button type="info" plain style="width: 78%" @click="clkicLogin()"
     >登录</el-button
   >
   <nav>
@@ -21,46 +21,44 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-
+// import Cookies from "js-cookie";
+// // import api from "../api/api_export";
+import axios from "axios";
 export default {
   name: "ElementLogin",
   data() {
     return {
-      userName: "",
-      password: "",
+      login_form: {
+        userName: "",
+        passWord: "",
+      },
+      loginRules: {
+        userName: [
+          { required: true, message: "用户名不能为空", trigger: "blur" },
+        ],
+        passWord: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+        ],
+      },
     };
   },
-  created() {},
   methods: {
-    toHome() {
-      this.$router.push("./home");
-    },
-    login: function () {
-      let fd = new FormData();
-      fd.append("userName", this.userName);
-      fd.append("passwd", this.password);
-      // console.log(fd.get("passwd"));
-
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      this.$axios
-        .post("user/login", fd, config)
-        .then((res) => {
-          alert(res.data.msg);
-          if (res.data.code === 200) {
-            Cookies.set("userName", fd.get("userName"));
-            this.$router.push({
-              path: "/success",
-            });
+    clkicLogin() {
+      const that = this;
+      axios
+        .post("http://127.0.0.1:5000", this.login_form)
+        .then(function (response) {
+          if (response.data.code == 0) {
+            sessionStorage.setItem("accessToken", response.data.session);
+            that.$router.push({ path: "/home" });
+          } else if (response.data.code == 1002) {
+            console.log("用户名不存在");
+          } else if (response.data.code == 1003) {
+            console.log("密码错误");
           }
         })
-        .catch((res) => {
-          alert(res.data.msg);
+        .catch(function (error) {
+          console.log(error);
         });
     },
   },

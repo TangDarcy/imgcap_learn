@@ -2,7 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import ElementLogin from "@/components/ElementLogin.vue";
 import ElementRegister from "@/components/ElementRegister.vue";
 import ElementHome from "@/components/ElementHome.vue";
-
+import UserInfo from "@/components/UserInfo.vue";
+import ChangePwd from "@/components/ChangePwd.vue";
+import ChangeUserInfo from "@/components/ChangeUserinfo.vue";
+import DescriptionMan from "@/components/DescriptionMan.vue";
 const routes = [
   {
     path: "/",
@@ -27,6 +30,26 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/userInfo",
+    name: "userInfo",
+    component: UserInfo,
+  },
+  {
+    path: "/changePwd",
+    name: "changePwd",
+    component: ChangePwd,
+  },
+  {
+    path: "/changeUserInfo",
+    name: "changeUserInfo",
+    component: ChangeUserInfo,
+  },
+  {
+    path: "/descriptionMan",
+    name: "DescriptionMan",
+    component: DescriptionMan,
   },
 ];
 
