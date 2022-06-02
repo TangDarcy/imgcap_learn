@@ -1,3 +1,4 @@
+#数据库配置
 MYHOST='192.168.31.153'
 MYPORT=3306
 MYUSER='tang'
